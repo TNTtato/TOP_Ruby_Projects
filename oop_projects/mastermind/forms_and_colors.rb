@@ -1,9 +1,17 @@
-module FormsAndColors
-  def FormsAndColors.default_row_circle
-    colorize("\u25cb", :white)
+module FAC
+  def self.void_circle
+    "\u25ef"
   end
 
-  def FormsAndColors.colorize(value, color)
+  def self.filled_circle
+    "\u2b24"
+  end
+
+  def self.default_row_circle
+    colorize(void_circle, :white)
+  end
+
+  def self.colorize(value, color)
     case color
       when :black then "\e[30m" + value.to_s + "\e[0m"
       when :red then "\e[31m" + value.to_s + "\e[0m"
@@ -23,5 +31,16 @@ module FormsAndColors
       when :bright_white then "\e[1m\e[37m" + value.to_s + "\e[0m"
       else value.to_s
     end
+  end
+
+  def self.color_hash
+    {
+      '1' => colorize(filled_circle, :red),
+      '2' => colorize(filled_circle, :blue),
+      '3' => colorize(filled_circle, :green),
+      '4' => colorize(filled_circle, :yellow),
+      '5' => colorize(filled_circle, :cyan),
+      '6' => colorize(filled_circle, :magenta)
+    }
   end
 end

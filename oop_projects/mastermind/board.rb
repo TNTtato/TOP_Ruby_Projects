@@ -1,6 +1,6 @@
 require_relative 'forms_and_colors'
 
-#module Board
+module Board
   class Stack_of_Rows
     attr_reader :rows
 
@@ -16,7 +16,7 @@ require_relative 'forms_and_colors'
   end
 
   class Row
-    attr_reader :cells
+    attr_reader :cells, :full_row
 
     def initialize
       @length = 4
@@ -55,4 +55,4 @@ require_relative 'forms_and_colors'
       @circle = FormsAndColors.default_row_circle
     end
   end
-#end
+end

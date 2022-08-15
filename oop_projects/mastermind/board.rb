@@ -1,7 +1,8 @@
 require_relative 'forms_and_colors'
 
 module Board
-  class Stack_of_Rows
+  class StackOfRows
+    COLORS = FAC.color_hash
     attr_reader :rows
 
     def initialize
@@ -12,6 +13,39 @@ module Board
 
     def append_rows
       @length.times { @rows << Row.new }
+    end
+
+    def change_cells_color(code, result)
+      pos = @length - 1
+      change_row_input(code, pos)
+      change_cells_result(result, pos)
+      @length -= 1
+    end
+
+    def change_row_input(code, pos)
+      broke_code = code.split('')
+      working_row = @rows[pos].full_row[0]
+      n = 0
+      working_row.each do |cell|
+        cell.circle = COLORS[broke_code[n]]
+        n += 1
+      end
+    end
+
+    def change_cells_result(result, pos)
+      working_row = @rows[pos].full_row[1]
+      n = 0
+      working_row.status.flatten.each do |cell|
+        case result[n]
+        when 'c'
+        cell.circle = COLORS['1']
+        when 'm'
+        cell.circle = COLORS['7']
+        when 'n'
+        cell.circle = FAC.default_row_circle
+        end
+        n += 1
+      end
     end
   end
 
@@ -32,7 +66,7 @@ module Board
   end
 
   class Result
-    attr_reader :status
+    attr_accessor :status
 
     def initialize
       @status = []
@@ -49,10 +83,10 @@ module Board
   end
 
   class Cell
-    attr_reader :circle
+    attr_accessor :circle
 
     def initialize
-      @circle = FormsAndColors.default_row_circle
+      @circle = FAC.default_row_circle
     end
   end
 end

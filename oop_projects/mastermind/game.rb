@@ -1,5 +1,6 @@
 require_relative 'forms_and_colors'
 require_relative 'board'
+require_relative 'interface'
 
 class Game
   attr_reader :code
@@ -47,6 +48,9 @@ class Game
     @code = rand_code
     @user_code = enter_code
     result = validate_code(@user_code).sort
+    board.change_cells_color(@user_code, result)
+    Interface.draw_board(board)
+    p @code
   end
 
   def guesser_mode
@@ -71,3 +75,8 @@ class Game
     result
   end
 end
+
+game1 = Game.new
+board = Board::StackOfRows.new
+
+game1.play(board)

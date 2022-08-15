@@ -40,7 +40,8 @@ module FAC
       '3' => colorize(filled_circle, :green),
       '4' => colorize(filled_circle, :yellow),
       '5' => colorize(filled_circle, :cyan),
-      '6' => colorize(filled_circle, :magenta)
+      '6' => colorize(filled_circle, :magenta),
+      '7' => colorize(filled_circle, :white)
     }
   end
 end

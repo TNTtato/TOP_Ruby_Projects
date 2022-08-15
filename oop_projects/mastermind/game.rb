@@ -1,11 +1,11 @@
 require_relative 'forms_and_colors'
-require_relative 'board'
 require_relative 'interface'
 
 class Game
   attr_reader :code
   def initialize
     @remaining_attempts = 12
+    @code_broke = false
     # instructions needed, must be created in interface
     choose_role
   end
@@ -46,11 +46,28 @@ class Game
 
   def breaker_mode(board)
     @code = rand_code
+    loop do
+      one_round_breaker_m(board)
+      condition1 = @code_broke
+      condition2 = board.length.zero?
+      if condition1
+        puts 'You have broke the code!'
+        break
+      end
+      if condition2
+        puts 'You have no more chances, the code was:'
+        puts @code
+        break
+      end
+    end
+  end
+
+  def one_round_breaker_m(board)
     @user_code = enter_code
     result = validate_code(@user_code).sort
+    @code_broke = result.all? {|c| c == 'c'}
     board.change_cells_color(@user_code, result)
     Interface.draw_board(board)
-    p @code
   end
 
   def guesser_mode
@@ -75,8 +92,3 @@ class Game
     result
   end
 end
-
-game1 = Game.new
-board = Board::StackOfRows.new
-
-game1.play(board)

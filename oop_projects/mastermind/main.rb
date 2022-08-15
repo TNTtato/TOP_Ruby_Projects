@@ -1,6 +1,9 @@
 require_relative 'board'
 require_relative 'interface'
+require_relative 'game'
 
-board = Board::Stack_of_Rows.new
+Interface.instructions
+game = Game.new
+board = Board::StackOfRows.new
 
-Interface.draw_board(board)
+game.play(board)

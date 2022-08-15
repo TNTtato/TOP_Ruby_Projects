@@ -3,7 +3,7 @@ require_relative 'forms_and_colors'
 module Board
   class StackOfRows
     COLORS = FAC.color_hash
-    attr_reader :rows
+    attr_reader :rows, :length
 
     def initialize
       @length = 12

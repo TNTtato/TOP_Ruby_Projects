@@ -45,7 +45,7 @@ class Game
   end
 
   def breaker_mode(board)
-    @code = rand_code
+    @code = rand_code original line
     loop do
       one_round_breaker_m(board)
       condition1 = @code_broke
@@ -77,10 +77,10 @@ class Game
     target_code = @code.split('')
     input_code = code.split('')
     result = []
-    target_code.each_with_index do |cod, idx|
-      if input_code.include?(cod)
+    input_code.each_with_index do |cod, idx|
+      if target_code.include?(cod)
         n = 'm'
-        input_code.each_with_index do |tar, jdx|
+        target_code.each_with_index do |tar, jdx|
           n = 'c' if jdx == idx && tar == cod
         end
         result << n

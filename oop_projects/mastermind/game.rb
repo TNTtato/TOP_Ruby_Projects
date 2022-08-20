@@ -6,7 +6,6 @@ class Game
   def initialize
     @remaining_attempts = 12
     @code_broke = false
-    # instructions needed, must be created in interface
     choose_role
   end
 
@@ -41,11 +40,15 @@ class Game
   end
 
   def rand_code
-    (1..6).to_a.sample(4).join('')
+    code = []
+    4.times do 
+      code << (1..6).to_a.sample(1)
+    end
+    code.join('')
   end
 
   def breaker_mode(board)
-    @code = rand_code original line
+    @code = rand_code
     loop do
       one_round_breaker_m(board)
       condition1 = @code_broke
@@ -70,25 +73,48 @@ class Game
     Interface.draw_board(board)
   end
 
-  def guesser_mode
+  def guesser_mode(board)
   end
 
-  def validate_code(code)
-    target_code = @code.split('')
+  def validate_code(code, tcode = @code)
     input_code = code.split('')
+    target_code = tcode.split('')
     result = []
-    input_code.each_with_index do |cod, idx|
-      if target_code.include?(cod)
-        n = 'm'
-        target_code.each_with_index do |tar, jdx|
-          n = 'c' if jdx == idx && tar == cod
-        end
-        result << n
-      else
-        n = 'n'
-        result << n
+    numbers = num_matches(input_code, target_code)
+    numbers[0].times {result << 'c'}
+    numbers[1].times {result << 'm'}
+    result << 'n' until result.length == 4
+    result
+  end
+  
+  def num_matches(code, tcode)
+    n = 0
+    target = tcode
+    code_i = code
+    code.each_with_index do |el, idx|
+      if el == tcode[idx]
+        n += 1
+        code_i[idx] = '*'
+        target[idx] = '-'
       end
     end
-    result
+    m = num_non_exact_matches(code_i, target)
+    [n,m]
+  end
+  
+  def num_non_exact_matches(code, tcode)
+    n = 0
+    target = tcode
+    code_i = code
+    code_i.each_with_index do |c, idx|
+      target.each_with_index do |tar, jdx|
+        if tar == c
+          n += 1
+          code_i[idx] = '*'
+          target[jdx] = '-'
+        end
+      end
+    end
+    n
   end
 end

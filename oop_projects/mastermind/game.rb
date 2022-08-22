@@ -1,5 +1,6 @@
 require_relative 'forms_and_colors'
 require_relative 'interface'
+require_relative 'settings'
 
 class Game
   attr_reader :code
@@ -48,7 +49,7 @@ class Game
   end
 
   def breaker_mode(board)
-    @code = '1432'
+    @code = rand_code
     loop do
       one_round_breaker_m(board)
       condition1 = @code_broke
@@ -118,13 +119,10 @@ class Game
     n
   end
 
-  def gen_pos
-    base = (1111..6666).to_a
-    base_s = base.map { |num| num.to_s }
-    base_s_n = base_s.select do |num|
-      num.split('').any? { |n| n.to_i > 6 || n.to_i.zero? }
+  def eliminate_candidates(s, guess, last_response)
+    s.reject do |candidate|
+      current_ans = validate_code(candidate, guess).sort
+      current_ans == last_response
     end
-    base_s -= base_s_n
   end
-  
 end

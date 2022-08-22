@@ -14,7 +14,7 @@ class Game
     loop do
       puts 'Choose your role:'
       puts 'BREAKER ----> 1'
-      puts 'GUESSER ----> 2'
+      puts 'SETTER -----> 2'
       @role = gets.chomp.to_i
       break if (1..2).include? @role
     end
@@ -25,7 +25,7 @@ class Game
     when 1
       breaker_mode(board)
     when 2
-      guesser_mode(board)
+      setter_mode(board)
     end
   end
 
@@ -68,26 +68,48 @@ class Game
 
   def one_round_breaker_m(board)
     @user_code = enter_code
-    result = validate_code(@user_code).sort
-    @code_broke = result.all? { |c| c == 'c' }
+    code = @user_code
+    result = result_each_round(code)
     draw_board(board, result)
   end
 
-  def draw_board(board, result)
-    board.change_cells_color(@user_code, result)
+  def result_each_round(code)
+    result = validate_code(code).sort
+    @code_broke = result.all? { |c| c == 'c' }
+    result
+  end
+
+  def draw_board(code, board, result)
+    board.change_cells_color(code, result)
     Interface.draw_board(board)
   end
 
-  def one_round_guesser_m(board, g0)
-    @computer_code = g0
-    result = validate_code(@computer_code).sort
-    @code_broke = result.all? { |c| c == 'c' }
+  def one_round_setter_m(board, guess)
+    @computer_code = guess
+    code = @computer_code
+    result = result_each_round(code)
+    draw_board(code, board, result)
+    sleep(1)
   end
 
-  def guesser_mode(board)
+  def setter_mode(board)
     puts "Set a code for the computer:"
     @code = enter_code
+    s = Settings.gen_pos
+    guess = '1122'
+    one_round_setter_m(board, guess)
+    loop do
+      one_round_setter_m(board, guess)
+      break if @remaining_attempts.zero? || @code_broke
 
+      response = validate_code(guess, code)
+      delete_candidates = eliminate_candidates(s, guess, response)
+      s -= delete_candidates
+      guess = pick_a_guess(s)
+      @remaining_attempts -= 1
+    end
+    puts 'Computer broke the code' if @code_broke
+    puts 'Computer has no more chances' if @remaining_attempts.zero?
   end
 
   def validate_code(code, tcode = @code)

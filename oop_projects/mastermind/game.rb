@@ -45,7 +45,7 @@ class Game
 
   def rand_code
     code = []
-    4.times do 
+    4.times do
       code << (1..6).to_a.sample
     end
     code.join('')
@@ -122,8 +122,8 @@ class Game
     target_code = tcode.split('')
     result = []
     numbers = num_matches(input_code, target_code)
-    numbers[0].times {result << 'c'}
-    numbers[1].times {result << 'm'}
+    numbers[0].times { result << 'c' }
+    numbers[1].times { result << 'm' }
     result << 'n' until result.length == 4
     result
   end
@@ -153,7 +153,7 @@ class Game
     m = num_non_exact_matches(code_i, target)
     [n, m]
   end
-  
+
   def num_non_exact_matches(code, tcode)
     n = 0
     target = tcode

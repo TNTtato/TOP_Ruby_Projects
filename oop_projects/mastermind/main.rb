@@ -3,7 +3,13 @@ require_relative 'interface'
 require_relative 'game'
 
 Interface.instructions
-game = Game.new
-board = Board::StackOfRows.new
+loop do
+  game = Game.new
+  board = Board::StackOfRows.new
+  game.play(board)
+  puts "If you want to play again, press 'y/Y', else any other"
+  break unless gets.chomp.downcase == 'y'
+end
+puts 'Thanks for playing!'
 
-game.play(board)
+# ajustar detalles visuales finales

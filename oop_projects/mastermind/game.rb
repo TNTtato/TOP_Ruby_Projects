@@ -10,6 +10,17 @@ class Game
     choose_role
   end
 
+  def play(board)
+    case @role
+    when 1
+      breaker_mode(board)
+    when 2
+      setter_mode(board)
+    end
+  end
+
+  private
+
   def choose_role
     loop do
       puts 'Choose your role:'
@@ -17,15 +28,6 @@ class Game
       puts 'SETTER -----> 2'
       @role = gets.chomp.to_i
       break if (1..2).include? @role
-    end
-  end
-
-  def play(board)
-    case @role
-    when 1
-      breaker_mode(board)
-    when 2
-      setter_mode(board)
     end
   end
 
@@ -70,7 +72,7 @@ class Game
     @user_code = enter_code
     code = @user_code
     result = result_each_round(code)
-    draw_board(board, result)
+    draw_board(code, board, result)
   end
 
   def result_each_round(code)

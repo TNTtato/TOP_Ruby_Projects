@@ -39,11 +39,11 @@ module Board
       working_row.status.flatten.each do |cell|
         case result[n]
         when 'c'
-        cell.circle = COLORS['1']
+          cell.circle = COLORS['1']
         when 'm'
-        cell.circle = COLORS['7']
+          cell.circle = COLORS['7']
         when 'n'
-        cell.circle = FAC.default_row_circle
+          cell.circle = FAC.default_row_circle
         end
         n += 1
       end

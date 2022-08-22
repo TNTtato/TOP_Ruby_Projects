@@ -11,5 +11,3 @@ loop do
   break unless gets.chomp.downcase == 'y'
 end
 puts 'Thanks for playing!'
-
-# ajustar detalles visuales finales

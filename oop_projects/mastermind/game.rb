@@ -4,6 +4,7 @@ require_relative 'settings'
 
 class Game
   attr_reader :code
+
   def initialize
     @remaining_attempts = 12
     @code_broke = false
@@ -45,24 +46,25 @@ class Game
   def rand_code
     code = []
     4.times do 
-      code << (1..6).to_a.sample(1)
+      code << (1..6).to_a.sample
     end
     code.join('')
   end
 
   def breaker_mode(board)
     @code = rand_code
+    breaker_loop(board)
+  end
+
+  def breaker_loop(board)
     loop do
       one_round_breaker_m(board)
-      condition1 = @code_broke
-      condition2 = board.length.zero?
-      if condition1
+      if @code_broke
         puts 'You have broke the code!'
         break
       end
-      if condition2
-        puts 'You have no more chances, the code was:'
-        puts @code
+      if board.length.zero?
+        puts "You have no more chances, the code was: #{@code}"
         break
       end
     end
@@ -86,30 +88,31 @@ class Game
     Interface.draw_board(board)
   end
 
-  def one_round_setter_m(board, guess)
-    @computer_code = guess
-    code = @computer_code
-    result = result_each_round(code)
-    draw_board(code, board, result)
+  def one_round_setter_m(board)
+    result = result_each_round(@computer_code)
+    draw_board(@computer_code, board, result)
     sleep(1)
   end
 
-  def setter_mode(board)
-    puts "Set a code for the computer:"
-    @code = enter_code
-    s = Settings.gen_pos
-    guess = '1122'
-    one_round_setter_m(board, guess)
+  def computer_loop(s, board)
     loop do
-      one_round_setter_m(board, guess)
+      one_round_setter_m(board)
       break if @remaining_attempts.zero? || @code_broke
 
-      response = validate_code(guess, code)
-      delete_candidates = eliminate_candidates(s, guess, response)
+      response = validate_code(@computer_code)
+      delete_candidates = eliminate_candidates(s, @computer_code, response)
       s -= delete_candidates
-      guess = pick_a_guess(s)
+      @computer_code = pick_a_guess(s)
       @remaining_attempts -= 1
     end
+  end
+
+  def setter_mode(board)
+    puts 'Set a code for the computer:'
+    @code = enter_code
+    s = Settings.gen_pos
+    @computer_code = '1122'
+    computer_loop(s, board)
     puts 'Computer broke the code' if @code_broke
     puts 'Computer has no more chances' if @remaining_attempts.zero?
   end
@@ -124,37 +127,6 @@ class Game
     result << 'n' until result.length == 4
     result
   end
-  
-  def num_matches(code, tcode)
-    n = 0
-    target = tcode
-    code_i = code
-    code.each_with_index do |el, idx|
-      if el == tcode[idx]
-        n += 1
-        code_i[idx] = '*'
-        target[idx] = '-'
-      end
-    end
-    m = num_non_exact_matches(code_i, target)
-    [n,m]
-  end
-  
-  def num_non_exact_matches(code, tcode)
-    n = 0
-    target = tcode
-    code_i = code
-    code_i.each_with_index do |_c, idx|
-      target.each_with_index do |_tar, jdx|
-        if target[jdx] == code_i[idx]
-          n += 1
-          code_i[idx] = '*'
-          target[jdx] = '-'
-        end
-      end
-    end
-    n
-  end
 
   def eliminate_candidates(s, guess, last_response)
     s.reject do |candidate|
@@ -165,5 +137,36 @@ class Game
 
   def pick_a_guess(possibilities)
     possibilities.sample
+  end
+
+  def num_matches(code, tcode)
+    n = 0
+    target = tcode
+    code_i = code
+    code.each_with_index do |el, idx|
+      next unless el == tcode[idx]
+
+      n += 1
+      code_i[idx] = '*'
+      target[idx] = '-'
+    end
+    m = num_non_exact_matches(code_i, target)
+    [n, m]
+  end
+  
+  def num_non_exact_matches(code, tcode)
+    n = 0
+    target = tcode
+    code_i = code
+    code_i.each_with_index do |_c, idx|
+      target.each_with_index do |_tar, jdx|
+        next unless target[jdx] == code_i[idx]
+
+        n += 1
+        code_i[idx] = '*'
+        target[jdx] = '-'
+      end
+    end
+    n
   end
 end

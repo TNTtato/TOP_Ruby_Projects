@@ -69,9 +69,19 @@ class Game
   def one_round_breaker_m(board)
     @user_code = enter_code
     result = validate_code(@user_code).sort
-    @code_broke = result.all? {|c| c == 'c'}
+    @code_broke = result.all? { |c| c == 'c' }
+    draw_board(board, result)
+  end
+
+  def draw_board(board, result)
     board.change_cells_color(@user_code, result)
     Interface.draw_board(board)
+  end
+
+  def one_round_guesser_m(board, g0)
+    @computer_code = g0
+    result = validate_code(@computer_code).sort
+    @code_broke = result.all? { |c| c == 'c' }
   end
 
   def guesser_mode(board)

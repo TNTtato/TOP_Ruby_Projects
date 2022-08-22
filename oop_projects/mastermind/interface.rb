@@ -1,4 +1,5 @@
 require_relative 'forms_and_colors'
+require_relative 'settings'
 
 module Interface
   CORNER_UP_L = "\u250c".freeze
@@ -12,7 +13,7 @@ module Interface
   VERTICAL_MIDDLE_DIV_P_R = "\u251c".freeze
   VERTICAL_MIDDLE_DIV_P_L = "\u2524".freeze
   MIDDLE_DIV_X = "\u253c".freeze
-  COLOR_HASH = FAC.color_hash
+  COLOR_HASH = Settings.color_hash
 
   def self.draw_row(row_cells, result_cells)
     print VERTICAL + ' ' * 12 + VERTICAL
@@ -71,5 +72,3 @@ module Interface
     puts "\nNOW, LET THE GAME BEGIN!"
   end
 end
-
-#draw_board(["\u25cb","\u25cb","\u25cb","\u25cb"], [["\u25cb","\u25cb"],["\u25cb","\u25cb"]])

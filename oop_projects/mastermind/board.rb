@@ -1,8 +1,9 @@
 require_relative 'forms_and_colors'
+require_relative 'settings'
 
 module Board
   class StackOfRows
-    COLORS = FAC.color_hash
+    COLORS = Settings.color_hash
     attr_reader :rows, :length
 
     def initialize

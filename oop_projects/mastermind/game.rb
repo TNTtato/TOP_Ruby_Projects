@@ -75,6 +75,9 @@ class Game
   end
 
   def guesser_mode(board)
+    puts "Set a code for the computer:"
+    @code = enter_code
+
   end
 
   def validate_code(code, tcode = @code)
@@ -124,5 +127,9 @@ class Game
       current_ans = validate_code(candidate, guess).sort
       current_ans == last_response
     end
+  end
+
+  def pick_a_guess(possibilities)
+    possibilities.sample
   end
 end

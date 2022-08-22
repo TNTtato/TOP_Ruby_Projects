@@ -48,7 +48,7 @@ class Game
   end
 
   def breaker_mode(board)
-    @code = rand_code
+    @code = '1432'
     loop do
       one_round_breaker_m(board)
       condition1 = @code_broke
@@ -106,9 +106,9 @@ class Game
     n = 0
     target = tcode
     code_i = code
-    code_i.each_with_index do |c, idx|
-      target.each_with_index do |tar, jdx|
-        if tar == c
+    code_i.each_with_index do |_c, idx|
+      target.each_with_index do |_tar, jdx|
+        if target[jdx] == code_i[idx]
           n += 1
           code_i[idx] = '*'
           target[jdx] = '-'

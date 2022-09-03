@@ -25,17 +25,38 @@ module Interface
   def self.instructions
     puts 'HANGMAN'
     puts "\nThis consist in guessing a word, for this you are gonna have a maximun of 10 chances"
-    puts 'If you ran out of chances, yo will be hang!'
+    puts 'If you ran out of chances, you will be hang!'
     puts "You are going to have to guess letter by letter, if one of guesses is rigth, then will be printed in the rigth places."
   end
 
   def self.new_or_load
-    puts 'Choose one of the options'
+    puts "\nChoose one of the options"
     puts '1 --> Play a new game'
     puts '2 --> Load a game'
+    puts '3 --> Delete a saved game'
   end
 
-  def self.saved_games
+  def draw_result
+    print "Current guesses are: "
+    @all_guesses.each { |l| print " #{l}"}
+    puts
+    @arr_result.each { |k| print " #{k}"}
+    print "\tRemaining chances: #{@chances}"
+    puts
+  end
 
+  def print_saved_games(option = 'load')
+    system 'clear'
+    puts "Enter the number of the game you want to #{option} or exit to quit"
+    games = Dir.glob("*.yaml", base: "saved")
+    games.each_with_index do |game, idx|
+    puts "#{idx + 1} ---> #{game.split('.')[0]}"
+    end
+    games
+  end
+
+  def final_result
+    puts "Too bad, you lose. The word was: #{@word}" if @lose
+    puts "You have guessed the word: #{@word.upcase}" if @win
   end
 end

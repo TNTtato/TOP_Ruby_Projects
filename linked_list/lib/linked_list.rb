@@ -56,8 +56,6 @@ class LinkedList
   end
 
   def find(value)
-    #returns the value of the node with that value
-    # nil if it does not exist
     bloq = Proc.new {|node| return node.index if value == node.value }
     iterate_list(&bloq)
   end

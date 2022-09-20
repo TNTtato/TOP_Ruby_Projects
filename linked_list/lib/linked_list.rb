@@ -1,7 +1,7 @@
 require_relative 'node'
 
 class LinkedList
-  attr_reader :size, :head, :tail # reads the list size and the head
+  attr_reader :size, :head, :tail 
 
   def initialize
     @size = 0
@@ -10,46 +10,45 @@ class LinkedList
   end
 
   def append(value)
-    # create a new node
     node = Node.new
-    # asign the value to the object
     node.value = value
-    
     @head = node if @size.zero?
-    # the last element will have this node as reference
     @tail.next_node = node unless @tail.nil?
-    # is the new tail
     @tail = node
-    # index = current size
     @tail.index = @size
-    # increase size by one
     @size += 1
-    # this node reference is nil
   end
 
   def prepend(value)
-    #create a new node
     node = Node.new
-    #asing the value to the object
     node.value = value
-    # the reference will be the head
     node.next_node = @head
-    # is the new head
     bloq = lambda {|node| node.index += 1}
     iterate_list(&bloq)
     @head = node
-    # increase size by one
     @size += 1
   end
 
   def at(index = 0)
-    # returns the node value at that index
     bloq = Proc.new {|node| return node.value if node.index == index}
     iterate_list(&bloq)
   end
 
   def pop
     # deletes the tail
+    bloq = Proc.new do|node| 
+      if node.next_node == @tail
+        node.next_node = nil
+        # node before tail, becomes tail
+        @tail = node
+      end
+    end
+    iterate_list(&bloq)
+    # decrease size by one
+    @size -= 1
+
+    # by eliminating references, the garbage collector will dispose of the last node
+
   end
 
   def contains?(value)
@@ -91,6 +90,8 @@ list1 = LinkedList.new
 list1.append("hola")
 list1.append(123)
 list1.prepend("otro")
+list1.pop
 list1.append(999)
 puts list1
-p list1.at(4)
+p list1.at(1)
+p list1.size

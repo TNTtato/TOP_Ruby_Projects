@@ -35,6 +35,7 @@ class LinkedList
   end
 
   def pop
+    @size -= 1
     bloq = Proc.new do|node| 
       if node.next_node == @tail
         node.next_node = nil
@@ -43,22 +44,22 @@ class LinkedList
         return temp_node.value
       end
     end
+
     iterate_list(&bloq)
-    @size -= 1
   end
 
   def contains?(value)
     contain = false
     bloq = Proc.new {|node| return contain = true if node.value == value}
-    #returns true if ths list has that node
     iterate_list(&bloq)
-    # false other wise
     contain
   end
 
   def find(value)
     #returns the value of the node with that value
     # nil if it does not exist
+    bloq = Proc.new {|node| return node.index if value == node.value }
+    iterate_list(&bloq)
   end
 
   def iterate_list(node = @head, &bloq)
@@ -93,6 +94,8 @@ list1.prepend("otro")
 p list1.pop
 list1.append(999)
 puts list1
-p list1.at(1)
+p list1.at(0)
 p list1.size
 p list1.contains?("perro")
+
+p list1.find('otro')

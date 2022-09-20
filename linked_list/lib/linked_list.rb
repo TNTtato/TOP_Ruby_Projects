@@ -78,7 +78,6 @@ class LinkedList
 
   #EXTRAS
   def insert_at(value, index) 
-  #inserts a new node with the provided value at the given index.
     bloq1 = lambda {|node| node.index += 1}
     bloq = Proc.new do |node| 
       if node.index == index - 1
@@ -95,7 +94,17 @@ class LinkedList
     iterate_list(&bloq)
   end
 
-  ##remove_at(index) that removes the node at the given index.
+  def remove_at(index)
+    bloq1 = lambda {|node| node.index -= 1}
+    bloq = Proc.new do |node|
+      if node.index == index - 1
+        node.next_node = node.next_node.next_node
+        @size -= 1
+        iterate_list(node.next_node, &bloq1)
+      end
+    end
+    iterate_list(&bloq)
+  end
 end
 
 list1 = LinkedList.new
@@ -112,5 +121,9 @@ p list1.contains?("perro")
 p list1.find('otro')
 
 list1.insert_at("insert test", 1)
+
+puts list1
+
+list1.remove_at(1)
 
 puts list1

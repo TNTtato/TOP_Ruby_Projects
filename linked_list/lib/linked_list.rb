@@ -40,7 +40,9 @@ class LinkedList
       if node.next_node == @tail
         node.next_node = nil
         # node before tail, becomes tail
+        temp_node = @tail
         @tail = node
+        return temp_node.value #returns the value of the deleted element
       end
     end
     iterate_list(&bloq)
@@ -90,7 +92,7 @@ list1 = LinkedList.new
 list1.append("hola")
 list1.append(123)
 list1.prepend("otro")
-list1.pop
+p list1.pop
 list1.append(999)
 puts list1
 p list1.at(1)

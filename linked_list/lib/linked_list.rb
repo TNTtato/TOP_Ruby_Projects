@@ -35,27 +35,25 @@ class LinkedList
   end
 
   def pop
-    # deletes the tail
     bloq = Proc.new do|node| 
       if node.next_node == @tail
         node.next_node = nil
-        # node before tail, becomes tail
         temp_node = @tail
         @tail = node
-        return temp_node.value #returns the value of the deleted element
+        return temp_node.value
       end
     end
     iterate_list(&bloq)
-    # decrease size by one
     @size -= 1
-
-    # by eliminating references, the garbage collector will dispose of the last node
-
   end
 
   def contains?(value)
+    contain = false
+    bloq = Proc.new {|node| return contain = true if node.value == value}
     #returns true if ths list has that node
+    iterate_list(&bloq)
     # false other wise
+    contain
   end
 
   def find(value)
@@ -97,3 +95,4 @@ list1.append(999)
 puts list1
 p list1.at(1)
 p list1.size
+p list1.contains?("perro")

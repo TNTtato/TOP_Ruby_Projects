@@ -81,17 +81,21 @@ class LinkedList
     bloq1 = lambda {|node| node.index += 1}
     bloq = Proc.new do |node| 
       if node.index == index - 1
-        new_node = Node.new
-        new_node.value = value
-        new_node.next_node = node.next_node
-        node.next_node = new_node
-        new_node.index = index
-        @size += 1
-        iterate_list(new_node.next_node, &bloq1)
+        insert_node_at(node, value, index)
+        iterate_list(node.next_node.next_node, &bloq1) #update idxs
         return
       end
     end
     iterate_list(&bloq)
+  end
+
+  def insert_node_at(node, value, index)
+    new_node = Node.new
+    new_node.value = value
+    new_node.next_node = node.next_node
+    node.next_node = new_node
+    new_node.index = index
+    @size += 1
   end
 
   def remove_at(index)
@@ -100,30 +104,9 @@ class LinkedList
       if node.index == index - 1
         node.next_node = node.next_node.next_node
         @size -= 1
-        iterate_list(node.next_node, &bloq1)
+        iterate_list(node.next_node, &bloq1) #update idxs
       end
     end
     iterate_list(&bloq)
   end
 end
-
-list1 = LinkedList.new
-list1.append("hola")
-list1.append(123)
-list1.prepend("otro")
-p list1.pop
-list1.append(999)
-puts list1
-p list1.at(0)
-p list1.size
-p list1.contains?("perro")
-
-p list1.find('otro')
-
-list1.insert_at("insert test", 1)
-
-puts list1
-
-list1.remove_at(1)
-
-puts list1

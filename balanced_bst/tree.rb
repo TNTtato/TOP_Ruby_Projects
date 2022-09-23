@@ -14,7 +14,17 @@ class Tree
     root.left = build_tree(ary[0...mid])
     root.right = build_tree(ary[mid + 1..])
 
-    return root
+    root
+  end
+
+  def insert(data, root = @root)
+    return data if root.data == data
+
+    if data < root.data 
+      root.left.nil? ? root.left = Node.new(data) : insert(data, root.left)
+    else
+      root.right.nil? ? root.right = Node.new(data) : insert(data, root.right)
+    end
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -25,4 +35,5 @@ class Tree
 end
 
 root = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+root.insert(6350)
 root.pretty_print

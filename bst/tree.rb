@@ -28,7 +28,33 @@ class Tree
   end
 
   def delete(data, root = @root)
-    
+    return root if root.nil?
+
+    if data <  root.data
+      root.left = delete(data, root.left)
+    elsif data > root.data
+      root.right = delete(data, root.right)
+    else
+      if root.left.nil?
+        return root.right
+      elsif root.right.nil?
+        return root.left
+      end
+
+      root.data = minim(root.right)
+      root.right = delete(root.data, root.right)
+    end
+
+    root
+  end
+
+  def minim(root)
+    minv = root.data
+    while root.left != nil
+      minv = root.left.data
+      root = root.left
+    end
+    minv
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -39,5 +65,4 @@ class Tree
 end
 
 root = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-
 root.pretty_print

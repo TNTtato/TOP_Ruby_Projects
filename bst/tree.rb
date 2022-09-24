@@ -70,11 +70,10 @@ class Tree
     queue = [@root]
     nb_result = []
     until queue.empty?
-      current = queue[0]
-      block_given? ? yield(current.data) : nb_result << current.data
+      current = queue.shift
+      block_given? ? yield(current) : nb_result << current.data
       queue << current.left unless current.left.nil?
       queue << current.right unless current.right.nil?
-      queue.shift
     end
     nb_result
   end

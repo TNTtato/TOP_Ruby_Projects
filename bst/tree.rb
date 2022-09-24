@@ -78,6 +78,30 @@ class Tree
     nb_result
   end
 
+  def preorder(root = @root, &block)
+    return if root.nil?
+    
+    block.call(root) unless block.nil?
+    preorder(root.left, &block)
+    preorder(root.right, &block)
+  end
+
+  def inorder(root = @root, &block)
+    return if root.nil?
+
+    preorder(root.left, &block)
+    block.call(root) unless block.nil?
+    preorder(root.right, &block)
+  end
+
+  def postorder(root = @root, &block)
+    return if root.nil?
+
+    preorder(root.left, &block)
+    preorder(root.right, &block)
+    block.call(root) unless block.nil?
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -87,4 +111,9 @@ end
 
 root = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 root.pretty_print
-p root.level_order
+root.preorder {|node| print "-> [#{node.data}]"}
+puts
+root.inorder {|node| print "-> [#{node.data}]"}
+puts
+root.postorder {|node| print "-> [#{node.data}]"}
+puts

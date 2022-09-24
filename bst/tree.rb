@@ -57,6 +57,13 @@ class Tree
     minv
   end
 
+  def find(data, root = @root)
+    return root if data == root.data
+    return if root.left.nil? && root.right.nil?
+
+    data < root.data ? find(data, root.left) : find(data, root.right)
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"

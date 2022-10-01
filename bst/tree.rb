@@ -103,7 +103,23 @@ class Tree
   end
 
   def height(root = @root)
-    
+    return 0 if root.nil?
+
+    left_height = height(root.left)
+    right_height = height(root.right)
+
+    [left_height, right_height].max{ |a, b| a <=> b} + 1
+  end
+
+  def depth(x, node = @root, dp = 0)
+    return -1 if node.nil?
+    return dp + 1 if node.data == x
+
+    if node.data > x
+      depth(x, node.left, dp + 1)
+    elsif node.data < x
+      depth(x, node.right, dp + 1)
+    end
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -122,3 +138,5 @@ puts
 root.postorder {|node| print "-> [#{node.data}]"}
 puts
 p root.height
+puts
+p root.depth(8)

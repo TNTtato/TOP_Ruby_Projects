@@ -64,10 +64,10 @@ class Tree
     data < root.data ? find(data, root.left) : find(data, root.right)
   end
 
-  def level_order
-    return if @root.nil?
+  def level_order(root = @root)
+    return if root.nil?
 
-    queue = [@root]
+    queue = [root]
     nb_result = []
     until queue.empty?
       current = queue.shift
@@ -100,6 +100,10 @@ class Tree
     preorder(root.left, &block)
     preorder(root.right, &block)
     block.call(root) unless block.nil?
+  end
+
+  def height(root = @root)
+
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)

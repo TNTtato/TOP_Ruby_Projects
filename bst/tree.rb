@@ -89,9 +89,9 @@ class Tree
   def inorder(root = @root, &block)
     return if root.nil?
 
-    preorder(root.left, &block)
+    inorder(root.left, &block)
     block.call(root) unless block.nil?
-    preorder(root.right, &block)
+    inorder(root.right, &block)
   end
 
   def postorder(root = @root, &block)
@@ -103,7 +103,7 @@ class Tree
   end
 
   def height(root = @root)
-
+    
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -121,3 +121,4 @@ root.inorder {|node| print "-> [#{node.data}]"}
 puts
 root.postorder {|node| print "-> [#{node.data}]"}
 puts
+p root.height

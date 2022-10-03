@@ -25,6 +25,7 @@ class Tree
     else
       root.right.nil? ? root.right = Node.new(data) : insert(data, root.right)
     end
+    rebalance unless balanced?
   end
 
   def delete(data, root = @root)
@@ -44,7 +45,7 @@ class Tree
       root.data = minim(root.right)
       root.right = delete(root.data, root.right)
     end
-
+    rebalance unless balanced?
     root
   end
 
@@ -122,21 +123,24 @@ class Tree
     end
   end
 
+  def balanced?(root = @root)
+    return true if root.nil?
+
+    hl = height(root.left)
+    hr = height(root.right)
+
+    (hl - hr)**2 <= 1 && balanced?(root.right) && balanced?(root.left)
+  end
+
+  def rebalance
+    nodes = level_order
+    nodes.sort!
+    @root = build_tree(nodes)
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 end
-
-root = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-root.pretty_print
-root.preorder {|node| print "-> [#{node.data}]"}
-puts
-root.inorder {|node| print "-> [#{node.data}]"}
-puts
-root.postorder {|node| print "-> [#{node.data}]"}
-puts
-p root.height
-puts
-p root.depth(8)

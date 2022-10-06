@@ -16,7 +16,7 @@ class Board
   def build_graph
     @graph = @positions.map do |pos|
       temp = []
-      self.knight.moves.each do |mov|
+      knight.moves.each do |mov|
         pos_change = [pos[0] + mov[0], pos[1] + mov[1]]
         temp << @positions.index(pos_change) if @positions.include? pos_change
       end

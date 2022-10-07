@@ -14,13 +14,14 @@ class Board
   end
 
   def build_graph
-    @graph = @positions.map do |pos|
+    @graph = @positions.inject({}) do |graph, pos|
       temp = []
       knight.moves.each do |mov|
         pos_change = [pos[0] + mov[0], pos[1] + mov[1]]
         temp << @positions.index(pos_change) if @positions.include? pos_change
       end
-      temp
+      graph[@positions.index pos] = temp
+      graph
     end
   end
 end

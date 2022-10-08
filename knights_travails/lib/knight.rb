@@ -1,11 +1,11 @@
 require_relative 'board'
 
 class Knight
-  attr_reader :board, :moves
+  attr_reader :board, :moves, :src, :dst
 
-  def initialize(start, end_pos)
-    @start = start
-    @end = end_pos
+  def initialize(src, dst)
+    @src = src
+    @dst = dst
     @moves = [[2, -1], [2, 1], [1, 2], [-1, 2], [-2, -1], [-2, 1], [1, -2], [-1, -2]]
     @board = Board.new
     @board.knight = self

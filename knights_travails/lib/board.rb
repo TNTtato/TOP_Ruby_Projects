@@ -1,5 +1,5 @@
 class Board
-  attr_accessor :knight, :graph
+  attr_accessor :knight, :graph, :positions
 
   def initialize
     @positions = create_board

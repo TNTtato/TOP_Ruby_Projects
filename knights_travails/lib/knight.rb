@@ -11,8 +11,4 @@ class Knight
     @board.knight = self
     @board.build_graph
   end
-
 end
-
-k = Knight.new([0,0], [3,5])
-k.board.graph.each_with_index {|row, idx| puts "#{idx} --> #{row}"}

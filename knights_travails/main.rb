@@ -2,9 +2,10 @@ require_relative 'lib/knight'
 
 def main
   src = [0, 0]
-  dst = [1, 1]
+  dst = [1, 3]
   knight = Knight.new(src, dst)
   count = 0
+  puts "Shortest Path\nStarting point --> #{src}\nEnd Point --> #{dst}\n\n"
   knight.board.positions.each do |pos|
     print "#{pos} "
     count += 1
@@ -14,6 +15,7 @@ def main
     end
   end
   puts
+  puts "Result:"
   p knight_moves(knight)
 end
 
@@ -22,7 +24,7 @@ def knight_moves(knight)
   nodes = knight.board.positions
   graph = knight.board.graph
   current = nodes.index(knight.dst)
-  mvs = moves(knight)
+  mvs = moves(knight.src, knight.dst, nodes, graph)
   conns = graph[current]
   mvs.reverse.each do |pos|
     if conns.include? nodes.index(pos)
@@ -34,17 +36,17 @@ def knight_moves(knight)
   path.reverse
 end
 
-def moves(knight)
-  queue = [knight.src, []]
+def moves(src, dst, nodes, graph)
+  queue = [src, []]
   until queue.empty?
     current = queue.shift
     visited = queue.pop
-    return visited if current == knight.dst
+    return visited if current == dst
 
     visited << current
-    connections = knight.board.graph[knight.board.positions.index(current)]
+    connections = graph[nodes.index(current)]
     connections.each do |conn|
-      queue << knight.board.positions[conn] unless visited.include? knight.board.positions[conn]
+      queue << nodes[conn] unless visited.include? nodes[conn]
     end
     queue << visited
   end
